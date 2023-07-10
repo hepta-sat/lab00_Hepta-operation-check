@@ -14,7 +14,6 @@ DigitalOut led1(LED1);
 DigitalOut led2(LED2);
 DigitalOut led3(LED3);
 DigitalOut led4(LED4);
-DigitalOut convertar(p26);
 HEPTA_CDH cdh(p5, p6, p7, p8, "sd");
 Timer sattime;
 //HeptaSatセンサ検証用コード
@@ -33,7 +32,9 @@ int main()
 {
     sattime.start();
     int i = 0,rcmd=0,cmdflag=0;
-    float bt,ax,ay,az;
+    //float bt,ax,ay,az;
+    float ax,ay,az;
+    float bt;
     
     while(1) {
         wait(0.5);
@@ -58,13 +59,14 @@ int main()
             }
             if (rcmd == 'b') {//3.3V コンバータON
                 pc.printf("Command Get b 3.3V on\r\n");
-                   convertar=1;
+                   eps.turn_on_regulator();//turn on 3.3V conveter
+                   wait(1);
             }
             if (rcmd == 'c') {//3.3V コンバータOFF
                 pc.printf("Command Get c 3.3V off\r\n");
                 for(int i=0;i<10;i++){
                     pc.printf("3.3V turn off\r\n");
-                    convertar=0;
+                    eps.shut_down_regulator();
                     wait(0.5);
                 }
                 pc.printf("3.3V turn on\r\n");                
@@ -158,12 +160,8 @@ int main()
                 pc.printf("===================\r\n");
                 for(int ii = 0; ii < 10; ii++) {
                     sensor.sen_acc(&ax,&ay,&az);
-                    eps.vol(&bt);
-                    com.printf("AX = %f\r\n",ax);
-                    com.printf("AY = %f\r\n",ay);
-                    com.printf("AZ = %f\r\n",az);
-                    com.printf("V = %f\r\n",bt);
-                    wait(0.5);
+                    com.printf("acc : %f,%f,%f\r\n",ax,ay,az);
+                    wait(1.0);
                 }
             }
             com.initialize();
