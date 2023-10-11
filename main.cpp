@@ -136,8 +136,7 @@ int main()
             pc.printf("Command Get i gps\r\n");
             sensor.gps_setting();
             pc.printf("GPS Raw Data Mode\r\n");
-            
-            for(int i = 0; i<10; i++) {
+            for(int i = 0; i<100; i++) {
                 pc.putc(sensor.getc());
             }
         }        
