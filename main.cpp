@@ -41,8 +41,11 @@ int main()
     int cmdflag=0;
     
     while(1) {
-        printf("----------\r\na =LED\r\nb = 3.3 convert on\r\nc = 3.3 convert off\r\nd = sattime\r\ne = SDcards\r\nf = battery\r\ng = temp\r\nh = 9axis\r\ni = gps\r\nj = camera\r\nk=xbee\r\nl = auto\r\n----------\r\n");
-        wait(0.5);
+        printf("------------------\r\n");
+        printf("a =LED\r\nb = 3.3 convert on\r\nc = 3.3 convert off\r\nd = sattime\r\ne = SDcards\r\nf = battery\r\ng = temp\r\nh = 9axis\r\ni = gps\r\nj = camera\r\nk = xbee\r\n");
+        printf("l = auto\r\n");
+        printf("------------------\r\n");
+        
         char c=pc.getc();
         pc.printf("get command = %c\r\n",c);
         eps.turn_on_regulator();//turn on 3.3V conveter
@@ -63,7 +66,7 @@ int main()
         }
         
         if (c == 'b') {//3.3V コンバータON
-            pc.printf("Command Get b 3.3V on\r\n");
+            pc.printf("Command Get b 3.3Vconverter on\r\n");
             pc.printf("GND -> p1   3.3V -> p31 or p32 or p33\r\n");
             eps.turn_on_regulator();//turn on 3.3V conveter
             printf("チェック終わったら何かキーを押してください\r\n");
@@ -71,7 +74,7 @@ int main()
             
         }
         if (c == 'c') {//3.3V コンバータOFF
-                pc.printf("Command Get c 3.3V off\r\n");
+                pc.printf("Command Get c 3.3Vconverter off\r\n");
                 pc.printf("GND -> p1   3.3V -> p31 or p32 or p33\r\n");
                 eps.shut_down_regulator();
                 printf("チェック終わったら何かキーを押してください\r\n");
@@ -209,14 +212,14 @@ int main()
     printf("チェック終わったら何かキーを押してください\r\n");
     char b=pc.getc();
         
-        
     pc.printf("Command Get c 3.3V off\r\n");
     pc.printf("GND -> p1   3.3V -> p31 or p32 or p33\r\n");
     eps.shut_down_regulator();
     printf("チェック終わったら何かキーを押してください\r\n");
-    char b=pc.getc();
+    char k=pc.getc();
     pc.printf("3.3V turn on\r\n");  
-    eps.turn_on_regulator();      
+    eps.turn_on_regulator();
+         
         
         
     pc.printf("Command Get d timer\r\n");
@@ -259,7 +262,7 @@ int main()
     for (int i=0;i<5;i++) {
         sensor.temp_sense(&temp);
         pc.printf("temp = %f\r\n",temp);
-        wait(1.0);
+        wait(0.5);
     }
         
     pc.printf("Command Get h mag\r\n");
@@ -268,7 +271,7 @@ int main()
     for(int i = 0; i<5; i++) {
         sensor.sen_mag(&mx,&my,&mz);
         pc.printf("mag : %f,%f,%f\r\n",mx,my,mz);
-        wait(1.0);
+        wait(0.5);
     }
         
        
@@ -310,8 +313,4 @@ int main()
         }
     }
     com.initialize();
-        
-    
-        
-
 }
