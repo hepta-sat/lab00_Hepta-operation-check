@@ -41,7 +41,7 @@ int main()
     int cmdflag=0;
     
     while(1) {
-        printf("a =LED\r\nb = 3.3 convert on\r\nc = 3.3 convert off\r\nd = sattime\r\ne = SDcards\r\nf = battery\r\ng = temp\r\nh = 9axis\r\ni = gps\r\nj = camera\r\nk=xbee\r\nl = auto");
+        printf("----------\r\na =LED\r\nb = 3.3 convert on\r\nc = 3.3 convert off\r\nd = sattime\r\ne = SDcards\r\nf = battery\r\ng = temp\r\nh = 9axis\r\ni = gps\r\nj = camera\r\nk=xbee\r\nl = auto\r\n----------\r\n");
         wait(0.5);
         char c=pc.getc();
         pc.printf("get command = %c\r\n",c);
@@ -212,13 +212,11 @@ int main()
         
     pc.printf("Command Get c 3.3V off\r\n");
     pc.printf("GND -> p1   3.3V -> p31 or p32 or p33\r\n");
-    
-    
     eps.shut_down_regulator();
     printf("チェック終わったら何かキーを押してください\r\n");
-    char c=pc.getc();
+    char b=pc.getc();
     pc.printf("3.3V turn on\r\n");  
-    eps.turn_on_regulator();         
+    eps.turn_on_regulator();      
         
         
     pc.printf("Command Get d timer\r\n");
@@ -234,7 +232,7 @@ int main()
         error("Could not open file for write\r\n");
         pc.printf("not find sdcards/r/n");
     }
-    for(int i=0; i<10; i++)fprintf(fp,"Hello my name is HEPTA!\r\n");
+    for(int i=0; i<5; i++)fprintf(fp,"Hello my name is HEPTA!\r\n");
     pc.printf("write ok!!\r\n");
     pc.printf("lets read!!\r\n");
     fclose(fp);
@@ -248,7 +246,7 @@ int main()
 
        
     pc.printf("Command Get f battery\r\n");
-    for(int ii = 0; ii < 10; ii++) {
+    for(int ii = 0; ii < 5; ii++) {
         eps.vol(&bt);
         pc.printf("V = %f\r\n",bt);
         wait(0.5);
@@ -258,7 +256,7 @@ int main()
     pc.printf("Command Get g temprature\r\n");
     eps.turn_on_regulator();//turn on 3.3V conveter
     float temp;
-    for (int i=0;i<10;i++) {
+    for (int i=0;i<5;i++) {
         sensor.temp_sense(&temp);
         pc.printf("temp = %f\r\n",temp);
         wait(1.0);
@@ -267,7 +265,7 @@ int main()
     pc.printf("Command Get h mag\r\n");
     
     float mx,my,mz;
-    for(int i = 0; i<10; i++) {
+    for(int i = 0; i<5; i++) {
         sensor.sen_mag(&mx,&my,&mz);
         pc.printf("mag : %f,%f,%f\r\n",mx,my,mz);
         wait(1.0);
