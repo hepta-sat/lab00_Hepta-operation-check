@@ -289,26 +289,25 @@ int main()
     sensor.initialize(HeptaCamera_GPS::Baud115200, HeptaCamera_GPS::JpegResolution320x240);
     sensor.test_jpeg_snapshot_picture("/sd/test.jpg");
     //XBee  
-    pc.printf("Command Get k XBee\r\n");
-            for (int i=0; i<100; i++){
-                pc.printf("Plese press the key 'k' on the XBee side of the screen\r\n");
-                com.xbee_receive(&rcmd,&cmdflag);
-                wait(1.0);
-                if (cmdflag == 1){
-                    if (rcmd == 'k') {
-                        pc.printf("rcmd=%c, cmdflag=%d\r\n",rcmd,cmdflag);
-                        com.printf("HEPTA Uplink OK\r\n");
-                        pc.printf("===================\r\n");
-                        pc.printf("Accel sensing Mode\r\n");
-                        pc.printf("===================\r\n");
-                        for(int ii = 0; ii < 10; ii++) {
-                            sensor.sen_acc(&ax,&ay,&az);
-                            com.printf("acc : %f,%f,%f\r\n",ax,ay,az);
-                            wait(1.0);
-                        }
-                    }
-                    com.initialize();
-                    break;
+    for (int i=0; i<100; i++){
+        pc.printf("Plese press the key 'k' on the XBee side of the screen\r\n");
+        com.xbee_receive(&rcmd,&cmdflag);
+        wait(1.0);
+        if (cmdflag == 1){
+            if (rcmd == 'k') {
+                pc.printf("rcmd=%c, cmdflag=%d\r\n",rcmd,cmdflag);
+                com.printf("HEPTA Uplink OK\r\n");
+                pc.printf("===================\r\n");
+                pc.printf("Accel sensing Mode\r\n");
+                pc.printf("===================\r\n");
+                for(int ii = 0; ii < 10; ii++) {
+                    sensor.sen_acc(&ax,&ay,&az);
+                    com.printf("acc : %f,%f,%f\r\n",ax,ay,az);
+                    wait(1.0);
                 }
             }
+            com.initialize();
+            break;
+        }
+    }
 }
