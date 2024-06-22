@@ -190,6 +190,7 @@ int main()
         }
         
     }
+  //LED
     pc.printf("Command Get a LED\r\n");
     for(int ii = 0; ii < 3; ii++) {
         led1=1;
@@ -202,13 +203,14 @@ int main()
         led3=0;
         led4=0;
         wait(1);
-    }      
+    } 
+    //Converter on
     pc.printf("Command Get b 3.3V on\r\n");
     pc.printf("GND -> p1   3.3V -> p31 or p32 or p33\r\n");
     eps.turn_on_regulator();//turn on 3.3V conveter
     printf("Please press any key when you are done checking\r\n");
     char b=pc.getc();
-
+    //Converter off
     pc.printf("Command Get c 3.3V off\r\n");
     pc.printf("GND -> p1   3.3V -> p31 or p32 or p33\r\n");
     eps.shut_down_regulator();
@@ -216,9 +218,9 @@ int main()
     char k=pc.getc();
     pc.printf("3.3V turn on\r\n");  
     eps.turn_on_regulator();
-              
+    //Sattime            
     pc.printf("Command Get d timer\r\n");
-    for(int ii = 0; ii < 30; ii++) {
+    for(int ii = 0; ii < 10; ii++) {
         pc.printf("sattime=%f\r\n",sattime.read());
     }
     //SDcard
@@ -230,6 +232,7 @@ int main()
         error("Could not open file for write\r\n");
         pc.printf("not find sdcards/r/n");
     }
+    //Check SD
     for(int i=0; i<5; i++)fprintf(fp,"Hello my name is HEPTA!\r\n");
     pc.printf("write ok!!\r\n");
     pc.printf("lets read!!\r\n");
@@ -241,14 +244,14 @@ int main()
     }
     fclose(fp);
     pc.printf("ok!!\r\n");
-       
+    //Battery voltage
     pc.printf("Command Get f battery\r\n");
     for(int ii = 0; ii < 5; ii++) {
         eps.vol(&bt);
         pc.printf("V = %f\r\n",bt);
         wait(0.5);
     }
-          
+    //Tempreture      
     pc.printf("Command Get g temprature\r\n");
     eps.turn_on_regulator();//turn on 3.3V conveter
     float temp;
@@ -257,36 +260,35 @@ int main()
         pc.printf("temp = %f\r\n",temp);
         wait(0.5);
     }
-        
+    //Mag     
     pc.printf("Command Get h mag\r\n"); 
     float mx,my,mz;
-    for(int i = 0; i<5; i++) {
+    for(int i = 0; i<30; i++) {
         sensor.sen_mag(&mx,&my,&mz);
         pc.printf("mag : %f,%f,%f\r\n",mx,my,mz);
         wait(0.5);
     }
-         
+    //GPS     
     pc.printf("Command Get i gps\r\n");
     sensor.gps_setting();
     pc.printf("GPS Raw Data Mode\r\n");
     for(int i = 0; i<512; i++) {
         pc.putc(sensor.getc());
     }    
-
+    //Camera
     pc.printf("Command Get j camera\r\n");
     FILE *dummy = fopen("/sd/dummy.txt","w");
     if(dummy == NULL) {
         error("Could not open file for write\r\n");
     }
     fclose(dummy);
-    
     pc.printf("Camera Snapshot Mode\r\n");
     pc.printf("Hit Any Key To Take Picture\r\n");
     while(!pc.readable()) {}
     sensor.Sync();
     sensor.initialize(HeptaCamera_GPS::Baud115200, HeptaCamera_GPS::JpegResolution320x240);
     sensor.test_jpeg_snapshot_picture("/sd/test.jpg");
-        
+    //XBee  
     pc.printf("Command Get k XBee\r\n");
             for (int i=0; i<100; i++){
                 pc.printf("Plese press the key 'k' on the XBee side of the screen\r\n");
