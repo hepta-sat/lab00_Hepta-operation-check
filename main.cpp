@@ -63,13 +63,12 @@ int main()
                 led4=0;
                 wait(1);
             }
-        }
-        
+        }  
         if (c == 'b') {//3.3V コンバータON
             pc.printf("Command Get b 3.3Vconverter on\r\n");
             pc.printf("GND -> p1   3.3V -> p31 or p32 or p33\r\n");
             eps.turn_on_regulator();//turn on 3.3V conveter
-            printf("チェック終わったら何かキーを押してください\r\n");
+            printf("Please press any key when you are done checking.\r\n");
             char b=pc.getc();
             
         }
@@ -77,14 +76,12 @@ int main()
                 pc.printf("Command Get c 3.3Vconverter off\r\n");
                 pc.printf("GND -> p1   3.3V -> p31 or p32 or p33\r\n");
                 eps.shut_down_regulator();
-                printf("チェック終わったら何かキーを押してください\r\n");
+                printf("Please press any key when you are done checking.\r\n");
                 char b=pc.getc();
                 pc.printf("3.3V turn on\r\n");  
                 eps.turn_on_regulator();
                 
-            }
-                      
-        
+        }      
         if (c == 'd') {//sattime
             pc.printf("Command Get d timer\r\n");
             for(int ii = 0; ii < 10; ii++) {
@@ -145,7 +142,7 @@ int main()
             pc.printf("Command Get i gps\r\n");
             sensor.gps_setting();
             pc.printf("GPS Raw Data Mode\r\n");
-            for(int i = 0; i<100; i++) {
+            for(i=0; i<512; i++){
                 pc.putc(sensor.getc());
             }
         }        
@@ -165,31 +162,34 @@ int main()
             sensor.test_jpeg_snapshot_picture("/sd/test.jpg");
         }
         if (c == 'k') {//Xbee
-            pc.printf("--com mode--com  put command 'k'\r\n");
-            com.xbee_receive(&rcmd,&cmdflag);
-            if (rcmd == 'k') {
-                pc.printf("Command Get k xbee\r\n");
-                pc.printf("Command Get %d\r\n",rcmd);
-                com.printf("HEPTA Uplink OK\r\n");
-                pc.printf("===================\r\n");
-                pc.printf("Accel sensing Mode\r\n");
-                pc.printf("===================\r\n");
-                for(int ii = 0; ii < 10; ii++) {
-                    sensor.sen_acc(&ax,&ay,&az);
-                    com.printf("acc : %f,%f,%f\r\n",ax,ay,az);
-                    wait(1.0);
+            pc.printf("Command Get k XBee\r\n");
+            for (int i=0; i<100; i++){
+                pc.printf("Plese press the key 'k' on the XBee side of the screen\r\n");
+                com.xbee_receive(&rcmd,&cmdflag);
+                wait(1.0);
+                if (cmdflag == 1){
+                    if (rcmd == 'k') {
+                        pc.printf("rcmd=%c, cmdflag=%d\r\n",rcmd,cmdflag);
+                        com.printf("HEPTA Uplink OK\r\n");
+                        pc.printf("===================\r\n");
+                        pc.printf("Accel sensing Mode\r\n");
+                        pc.printf("===================\r\n");
+                        for(int ii = 0; ii < 10; ii++) {
+                            sensor.sen_acc(&ax,&ay,&az);
+                            com.printf("acc : %f,%f,%f\r\n",ax,ay,az);
+                            wait(1.0);
+                        }
+                    }
+                    com.initialize();
+                    break;
                 }
             }
-            com.initialize();
         }
         if (c == 'l') {
             break;
         }
         
     }
-    
-    
-    
     pc.printf("Command Get a LED\r\n");
     for(int ii = 0; ii < 3; ii++) {
         led1=1;
@@ -202,26 +202,21 @@ int main()
         led3=0;
         led4=0;
         wait(1);
-    }
-    
-        
-        
+    }      
     pc.printf("Command Get b 3.3V on\r\n");
     pc.printf("GND -> p1   3.3V -> p31 or p32 or p33\r\n");
     eps.turn_on_regulator();//turn on 3.3V conveter
-    printf("チェック終わったら何かキーを押してください\r\n");
+    printf("Please press any key when you are done checking\r\n");
     char b=pc.getc();
-        
+
     pc.printf("Command Get c 3.3V off\r\n");
     pc.printf("GND -> p1   3.3V -> p31 or p32 or p33\r\n");
     eps.shut_down_regulator();
-    printf("チェック終わったら何かキーを押してください\r\n");
+    printf("Please press any key when you are done checking\r\n");
     char k=pc.getc();
     pc.printf("3.3V turn on\r\n");  
     eps.turn_on_regulator();
-         
-        
-        
+              
     pc.printf("Command Get d timer\r\n");
     for(int ii = 0; ii < 5; ii++) {
         pc.printf("sattime=%f\r\n",sattime.read());
@@ -246,7 +241,6 @@ int main()
     }
     fclose(fp);
     pc.printf("ok!!\r\n");
-
        
     pc.printf("Command Get f battery\r\n");
     for(int ii = 0; ii < 5; ii++) {
@@ -254,8 +248,7 @@ int main()
         pc.printf("V = %f\r\n",bt);
         wait(0.5);
     }
-        
-        
+          
     pc.printf("Command Get g temprature\r\n");
     eps.turn_on_regulator();//turn on 3.3V conveter
     float temp;
@@ -265,23 +258,20 @@ int main()
         wait(0.5);
     }
         
-    pc.printf("Command Get h mag\r\n");
-    
+    pc.printf("Command Get h mag\r\n"); 
     float mx,my,mz;
     for(int i = 0; i<5; i++) {
         sensor.sen_mag(&mx,&my,&mz);
         pc.printf("mag : %f,%f,%f\r\n",mx,my,mz);
         wait(0.5);
     }
-        
-       
+         
     pc.printf("Command Get i gps\r\n");
     sensor.gps_setting();
     pc.printf("GPS Raw Data Mode\r\n");
-    for(int i = 0; i<100; i++) {
+    for(int i = 0; i<512; i++) {
         pc.putc(sensor.getc());
-    }
-        
+    }    
 
     pc.printf("Command Get j camera\r\n");
     FILE *dummy = fopen("/sd/dummy.txt","w");
@@ -297,20 +287,26 @@ int main()
     sensor.initialize(HeptaCamera_GPS::Baud115200, HeptaCamera_GPS::JpegResolution320x240);
     sensor.test_jpeg_snapshot_picture("/sd/test.jpg");
         
-    pc.printf("--com mode--com  put command 'k'\r\n");
-    com.xbee_receive(&rcmd,&cmdflag);
-    if (rcmd == 'k') {
-        pc.printf("Command Get k xbee\r\n");
-        pc.printf("Command Get %d\r\n",rcmd);
-        com.printf("HEPTA Uplink OK\r\n");
-        pc.printf("===================\r\n");
-        pc.printf("Accel sensing Mode\r\n");
-        pc.printf("===================\r\n");
-        for(int ii = 0; ii < 10; ii++) {
-            sensor.sen_acc(&ax,&ay,&az);
-            com.printf("acc : %f,%f,%f\r\n",ax,ay,az);
-            wait(1.0);
-        }
-    }
-    com.initialize();
+    pc.printf("Command Get k XBee\r\n");
+            for (int i=0; i<100; i++){
+                pc.printf("Plese press the key 'k' on the XBee side of the screen\r\n");
+                com.xbee_receive(&rcmd,&cmdflag);
+                wait(1.0);
+                if (cmdflag == 1){
+                    if (rcmd == 'k') {
+                        pc.printf("rcmd=%c, cmdflag=%d\r\n",rcmd,cmdflag);
+                        com.printf("HEPTA Uplink OK\r\n");
+                        pc.printf("===================\r\n");
+                        pc.printf("Accel sensing Mode\r\n");
+                        pc.printf("===================\r\n");
+                        for(int ii = 0; ii < 10; ii++) {
+                            sensor.sen_acc(&ax,&ay,&az);
+                            com.printf("acc : %f,%f,%f\r\n",ax,ay,az);
+                            wait(1.0);
+                        }
+                    }
+                    com.initialize();
+                    break;
+                }
+            }
 }
