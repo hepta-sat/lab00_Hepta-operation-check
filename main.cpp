@@ -218,7 +218,7 @@ int main()
     eps.turn_on_regulator();
               
     pc.printf("Command Get d timer\r\n");
-    for(int ii = 0; ii < 5; ii++) {
+    for(int ii = 0; ii < 30; ii++) {
         pc.printf("sattime=%f\r\n",sattime.read());
     }
     //SDcard
