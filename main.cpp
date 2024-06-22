@@ -132,7 +132,7 @@ int main()
             pc.printf("Command Get h mag\r\n");
             
             float mx,my,mz;
-            for(int i = 0; i<10; i++) {
+            for(int i = 0; i<30; i++) {
                 sensor.sen_mag(&mx,&my,&mz);
                 pc.printf("mag : %f,%f,%f\r\n",mx,my,mz);
                 wait(1.0);
